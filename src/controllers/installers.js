@@ -16,12 +16,12 @@ app.post('/wp', async (req, res) => {
       ssl ? '--letsencrypt ' : ''
     } --email=${email}`,
   );
-  if (!stderr) {
-    res.send(stdout);
-    const { out, err } = await exec(`wo site update ${url} --le`);
-    if (!err) {
-      console.log(out);
-    }
+  if (stderr) {
+    res.send(stderr);
+  }
+  const { out, err } = await exec(`wo site update ${url} --le`);
+  if (!err) {
+    console.log(out);
   }
   // exec(
   //   `wo site create ${url} --wpfc --user=${userAdmin} --pass=${passwordAdmin} ${
