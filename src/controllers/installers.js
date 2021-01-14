@@ -19,11 +19,16 @@ async function generatessl(url) {
 app.post('/wp', async (req, res) => {
   const { url, passwordAdmin, userAdmin, ssl, email } = req.body;
 
-  const woCreate = spawn(
-    `wo site create ${url} --wpfc --user=${userAdmin} --pass=${passwordAdmin} ${
-      ssl ? '--letsencrypt ' : ''
-    } --email=${email}`,
-  );
+  const woCreate = spawn('wo', [
+    'site',
+    'create',
+    `${url}`,
+    '--wpfc',
+    `--user=${userAdmin}`,
+    `--pass=${passwordAdmin}`,
+    `${ssl ? '--letsencrypt ' : ''}`,
+    `--email=${email}`,
+  ]);
   woCreate.stdout.on('data', (data) => {
     console.log('stdout', data);
   });
