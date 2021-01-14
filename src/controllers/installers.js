@@ -20,12 +20,13 @@ app.post('/wp', async (req, res) => {
   const { url, passwordAdmin, userAdmin, ssl, email } = req.body;
 
   async () => {
-    const { stdout } = await execa('wo', [
+    const { stdout, stderr } = await execa('wo', [
       `site create ${url} --wpfc --user=${userAdmin} --pass=${passwordAdmin} ${
         ssl ? '--letsencrypt ' : ''
       } --email=${email}`,
     ]);
     console.log(stdout);
+    console.log(stderr);
   };
   //await generatessl(url);
 
