@@ -4,7 +4,6 @@ const express = require('express');
 const router = express.Router();
 const app = express();
 const util = require('util');
-const { response } = require('../../app');
 const exec = util.promisify(require('child_process').exec);
 
 app.use(express.json());
