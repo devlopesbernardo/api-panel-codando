@@ -25,7 +25,7 @@ app.post('/wp', async (req, res) => {
     } --email=${email}`,
   );
   if (stderr) {
-    res.send(stderr);
+    res.send('err', stderr);
   }
   generatessl(url);
 
