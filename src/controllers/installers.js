@@ -23,7 +23,7 @@ app.post('/wp', async (req, res) => {
     `wo site create ${url} --wpfc --user=${userAdmin} --pass=${passwordAdmin} ${
       ssl ? '--letsencrypt ' : ''
     } --email=${email}`,
-    ['/'],
+    ['', '/'],
   );
   woCreate.stdout.on('data', (data) => {
     console.log(`stdout: ${data}`);
