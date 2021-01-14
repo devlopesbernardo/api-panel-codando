@@ -11,9 +11,9 @@ app.use(express.json());
 async function generatessl(url) {
   const { stdout, stderr } = await exec(`wo site update ${url} --le --force`);
   if (stderr) {
-    console.log(stderr);
+    return console.log(stderr);
   }
-  console.log(stdout);
+  return console.log(stdout);
 }
 
 app.post('/wp', async (req, res) => {
@@ -27,7 +27,7 @@ app.post('/wp', async (req, res) => {
   if (stderr) {
     res.send('err', stderr);
   }
-  generatessl(url);
+  await generatessl(url);
 
   // exec(
   //   `wo site create ${url} --wpfc --user=${userAdmin} --pass=${passwordAdmin} ${
