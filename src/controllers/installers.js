@@ -10,7 +10,7 @@ app.use(express.json());
 
 async function generatessl(url) {
   const { stdout, stderr } = await exec(`wo site update ${url} --le --force`);
-  if (!stderr) {
+  if (stderr) {
     console.log(stderr);
   }
   console.log(stdout);
