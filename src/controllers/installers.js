@@ -4,7 +4,7 @@ const express = require('express');
 const router = express.Router();
 const app = express();
 const util = require('util');
-const spawn = util.promisify(require('spawn').exec);
+const spawn = util.promisify(require('spawn').spawn);
 
 app.use(express.json());
 
