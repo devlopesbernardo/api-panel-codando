@@ -8,6 +8,14 @@ const exec = util.promisify(require('child_process').exec);
 
 app.use(express.json());
 
+async function generatessl(url) {
+  const { stdout, stderr } = await exec(`wo site update ${url} --le --force`);
+  if (!stderr) {
+    console.log(stderr);
+  }
+  console.log(stdout);
+}
+
 app.post('/wp', async (req, res) => {
   const { url, passwordAdmin, userAdmin, ssl, email } = req.body;
 
@@ -19,10 +27,8 @@ app.post('/wp', async (req, res) => {
   if (stderr) {
     res.send(stderr);
   }
-  const { out, err } = await exec(`wo site update ${url} --le --force`);
-  if (!err) {
-    console.log(out);
-  }
+  generatessl(url);
+
   // exec(
   //   `wo site create ${url} --wpfc --user=${userAdmin} --pass=${passwordAdmin} ${
   //     ssl ? '--letsencrypt ' : ''
