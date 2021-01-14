@@ -19,7 +19,7 @@ app.post('/wp', async (req, res) => {
   if (stderr) {
     res.send(stderr);
   }
-  const { out, err } = await exec(`wo site update ${url} --le`);
+  const { out, err } = await exec(`wo site update ${url} --le --force`);
   if (!err) {
     console.log(out);
   }
