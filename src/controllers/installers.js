@@ -27,6 +27,7 @@ app.post('/wp', async (req, res) => {
   if (stderr) {
     res.send('err', stderr);
   }
+  console.log('oi?');
   await generatessl(url);
 
   // exec(
