@@ -22,7 +22,18 @@ app.post('/wp', (req, res) => {
         console.log(`stderr: ${stderr}`);
         return;
       }
-      console.log(`stdout: ${stdout}`);
+      console.log(stdout);
+      exec(`wo site update ${url} --le`, (error, stdout, stderr) => {
+        if (error) {
+          console.log(`error: ${error.message}`);
+          return;
+        }
+        if (stderr) {
+          console.log(`stderr: ${stderr}`);
+          return;
+        }
+        console.log(stdout);
+      });
     },
   );
   res.status(200).send('Deu certo!');
