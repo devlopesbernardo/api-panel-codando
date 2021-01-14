@@ -4,7 +4,7 @@ const express = require('express');
 const router = express.Router();
 const app = express();
 const util = require('util');
-const { spawn } = require('child_process');
+const execa = require('execa');
 
 app.use(express.json());
 
@@ -19,24 +19,14 @@ async function generatessl(url) {
 app.post('/wp', async (req, res) => {
   const { url, passwordAdmin, userAdmin, ssl, email } = req.body;
 
-  const woCreate = spawn(
-    `wo site create ${url} --wpfc --user=${userAdmin} --pass=${passwordAdmin} ${
-      ssl ? '--letsencrypt ' : ''
-    } --email=${email}`,
-    ['', '/'],
-  );
-  woCreate.stdout.on('data', (data) => {
-    console.log(`stdout: ${data}`);
-  });
-
-  woCreate.on('close', (code) => {
-    console.log(`child process close all stdio with code ${code}`);
-  });
-
-  woCreate.on('exit', (code) => {
-    console.log(`child process exited with code ${code}`);
-  });
-
+  async () => {
+    const { stdout } = await execa('wo', [
+      `site create ${url} --wpfc --user=${userAdmin} --pass=${passwordAdmin} ${
+        ssl ? '--letsencrypt ' : ''
+      } --email=${email}`,
+    ]);
+    console.log(stdout);
+  };
   //await generatessl(url);
 
   // exec(
