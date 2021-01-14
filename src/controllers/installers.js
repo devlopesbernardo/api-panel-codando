@@ -4,7 +4,7 @@ const express = require('express');
 const router = express.Router();
 const app = express();
 const util = require('util');
-const spawn = util.promisify(require('spawn').spawn);
+const spawn = require('child_process');
 
 app.use(express.json());
 
@@ -19,15 +19,14 @@ async function generatessl(url) {
 app.post('/wp', async (req, res) => {
   const { url, passwordAdmin, userAdmin, ssl, email } = req.body;
 
-  const { stdout, stderr } = await spawn(
+  const woCreate = spawn(
     `wo site create ${url} --wpfc --user=${userAdmin} --pass=${passwordAdmin} ${
       ssl ? '--letsencrypt ' : ''
     } --email=${email}`,
   );
-  if (stderr) {
-    res.send('err', stderr.toString());
-  }
-  console.log('oi?');
+  woCreate.stdout.on('data', (data) => {
+    console.log('stdout', data);
+  });
   await generatessl(url);
 
   // exec(
