@@ -4,7 +4,7 @@ const express = require('express');
 const router = express.Router();
 const app = express();
 const util = require('util');
-const spawn = require('child_process');
+const { spawn } = require('child_process');
 
 app.use(express.json());
 
