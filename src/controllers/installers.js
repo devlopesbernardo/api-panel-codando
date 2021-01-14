@@ -30,9 +30,18 @@ app.post('/wp', async (req, res) => {
     `--email=${email}`,
   ]);
   woCreate.stdout.on('data', (data) => {
-    console.log('stdout', data);
+    console.log(`stdout: ${data}`);
   });
-  await generatessl(url);
+
+  woCreate.on('close', (code) => {
+    console.log(`child process close all stdio with code ${code}`);
+  });
+
+  woCreate.on('exit', (code) => {
+    console.log(`child process exited with code ${code}`);
+  });
+
+  //await generatessl(url);
 
   // exec(
   //   `wo site create ${url} --wpfc --user=${userAdmin} --pass=${passwordAdmin} ${
