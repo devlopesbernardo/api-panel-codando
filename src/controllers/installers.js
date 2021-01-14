@@ -56,7 +56,7 @@ app.post('/wp', async (req, res) => {
   //     });
   //   },
   // );
-  // res.status(200).send('Deu certo!');
+  res.status(200).send('Deu certo!');
 });
 
 module.exports = app;
