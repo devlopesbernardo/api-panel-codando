@@ -86,6 +86,10 @@ app.post('/node/react', async (req, res) => {
         res.send(stderr.toString());
       }
     })();
+
+    res
+      .status(201)
+      .send('Tudo ocorreu perfeitamente. Acesse ', url, 'e veja como está!');
   })();
 });
 
