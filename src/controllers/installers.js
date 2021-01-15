@@ -60,6 +60,8 @@ app.post('/node/react', async (req, res) => {
       }
       if (stderr) {
         await execa.command(`npm i --prefix /var/www/${url}/htdocs`);
+        await execa.command(`npm run --prefix /var/www/${url}/htdocs/ build`);
+
         let data = `{
           apps : [
             {
@@ -79,7 +81,6 @@ app.post('/node/react', async (req, res) => {
             }
           },
         );
-        await execa.command(`npm run --prefix /var/www/${url}/htdocs/ build`);
         await execa.command(
           `pm2 start /var/www/${url}/htdocs/app.config.json `,
         );
