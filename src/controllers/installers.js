@@ -32,7 +32,7 @@ app.post('/wp', async (req, res) => {
         return res.send('Encontramos um erro', stderr.toString());
       })();
     } else {
-      res.statusCode(201).send('Sucesso!');
+      res.status(201).send('Sucesso!');
     }
   })();
 });
