@@ -39,7 +39,7 @@ app.post('/wp', async (req, res) => {
 });
 
 app.post('/node/react', async (req, res) => {
-  const { url, port, github, script, ssl } = req.body;
+  const { url, port, github, ssl, appName } = req.body;
 
   (async () => {
     const { stdout, stderr } = await execa.command(
@@ -63,10 +63,10 @@ app.post('/node/react', async (req, res) => {
         let data = `{
           apps : [
             {
-              name      : "your-app",
+              name      : ${appName},
               script    : "npx",
               interpreter: "none",
-              args: "serve -p 8443 -T"
+              args: "serve -s build -l ${port}"
             }
           ]
         }`;
@@ -82,6 +82,7 @@ app.post('/node/react', async (req, res) => {
         await execa.command(
           `pm2 start /var/www/${url}/htdocs/app.config.json `,
         );
+        await execa.command(`wo site update ${url} --le --force`);
         res.send(stderr.toString());
       }
     })();
