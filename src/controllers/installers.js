@@ -1,9 +1,5 @@
-const { json } = require('body-parser');
-//const { exec } = require('child_process');
 const express = require('express');
-const router = express.Router();
 const app = express();
-const util = require('util');
 const execa = require('execa');
 
 app.use(express.json());
@@ -26,14 +22,45 @@ app.post('/wp', async (req, res) => {
         );
         if (!stderr) {
           console.log('Vim do meio e sou o stdout', stdout);
+          return res.status(201).send('Sucesso');
         }
         console.log(stderr);
 
-        return res.send('Encontramos um erro', stderr.toString());
+        return res.status(401).send('Encontramos um erro', stderr.toString());
       })();
     } else {
+      if (stderr) {
+        res.status(401).send('Ocorreu algum erro....', stderr);
+      }
       res.status(201).send('Sucesso!');
     }
+  })();
+});
+
+app.post('/node/react', async (req, res) => {
+  const { url, port, github, script, ssl } = req.body;
+
+  (async () => {
+    const { stdout, stderr } = await execa.command(
+      `wo site create ${url} --proxy=0.0.0.0:${port} ${
+        ssl ? '--letsencrypt --force' : ''
+      }`,
+    );
+    if (stderr) {
+      res.send('Ocorreu um erro. Essa porta/site já está em uso?');
+      return 0;
+    }
+    (async () => {
+      const { stdout, stderr } = await execa.command(
+        `cd /var/www/${url}/htdocs && git clone ${github} . && npm i && forever ${script}`,
+      );
+      if (stdout) {
+        res.send(`Não encontramos erros! Abra ${url} e veja como está!`);
+      }
+      if (stderr) {
+        res.send(stderr.toString());
+      }
+    })();
   })();
 });
 
