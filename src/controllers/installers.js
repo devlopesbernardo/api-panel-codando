@@ -55,10 +55,12 @@ app.post('/node/react', async (req, res) => {
         `git clone ${github} /var/www/${url}/htdocs --progress`,
       );
       if (stdout) {
-        await execa.command(`npm i && forever ${script}`);
         res.send(`Não encontramos erros! Abra ${url} e veja como está!`);
       }
       if (stderr) {
+        await execa.command(
+          `npm i --prefix /var/www/${url}/htdocs && forever ${script}`,
+        );
         res.send(stderr.toString());
       }
     })();
