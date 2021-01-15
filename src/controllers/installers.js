@@ -70,12 +70,18 @@ app.post('/node/react', async (req, res) => {
             }
           ]
         }`;
-        fs.writeFile(`/var/www/${url}/htdocs`, data, function (err) {
-          if (err) {
-            return err;
-          }
-        });
-        await execa.command(`pm2 start /var/www/${url}/htdocs ${script}`);
+        fs.writeFileSync(
+          `/var/www/${url}/htdocs/app.config.json`,
+          data,
+          function (err) {
+            if (err) {
+              return err;
+            }
+          },
+        );
+        await execa.command(
+          `pm2 start /var/www/${url}/htdocs/app.config.json `,
+        );
         res.send(stderr.toString());
       }
     })();
