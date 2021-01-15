@@ -85,6 +85,7 @@ app.post('/node/react', async (req, res) => {
           `pm2 start /var/www/${url}/htdocs/app.config.json `,
         );
         await execa.command(`wo site update ${url} --le --force`);
+        await execa.command(`pm2 reload all`);
         res
           .status(201)
           .send(
