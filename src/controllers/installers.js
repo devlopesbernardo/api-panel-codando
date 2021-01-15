@@ -52,7 +52,7 @@ app.post('/node/react', async (req, res) => {
     }
     (async () => {
       const { stdout, stderr } = await execa.command(
-        `git clone ${github} /var/www/${url}/htdocs`,
+        `git clone ${github} /var/www/${url}/htdocs --progress`,
       );
       if (stdout) {
         await execa.command(`npm i && forever ${script}`);
