@@ -66,9 +66,9 @@ app.post('/node/react', async (req, res) => {
           apps : [
             {
               name      : ${appName},
-              script    : "npx",
+              script    : "serve",
               interpreter: "none",
-              args: "serve -s build -l ${port}"
+              args: "-s build -l ${port}"
             }
           ]
         }`;
