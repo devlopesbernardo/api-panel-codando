@@ -85,11 +85,14 @@ app.post('/node/react', async (req, res) => {
           `pm2 start /var/www/${url}/htdocs/app.config.json `,
         );
         await execa.command(`wo site update ${url} --le --force`);
-        res.send(stderr.toString());
+        res
+          .status(201)
+          .send(
+            'Tudo ocorreu perfeitamente. Acesse ',
+            url,
+            'e veja como está!',
+          );
       }
-      res
-        .status(201)
-        .send('Tudo ocorreu perfeitamente. Acesse ', url, 'e veja como está!');
     })();
   })();
 });
