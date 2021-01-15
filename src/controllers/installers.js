@@ -52,8 +52,7 @@ app.post('/node/react', async (req, res) => {
     }
     (async () => {
       const { stdout, stderr } = await execa.command(
-        'cd / && ls',
-        //`cd /var/www/${url}/htdocs && git clone ${github} . && npm i && forever ${script}`,
+        `git clone ${github} /var/www/${url}/htdocs && npm i && forever ${script}`,
       );
       if (stdout) {
         res.send(`Não encontramos erros! Abra ${url} e veja como está!`);
