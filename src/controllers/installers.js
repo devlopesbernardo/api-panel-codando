@@ -58,8 +58,9 @@ app.post('/node/react', async (req, res) => {
         res.send(`Não encontramos erros! Abra ${url} e veja como está!`);
       }
       if (stderr) {
+        await execa.command(`npm i --prefix /var/www/${url}/htdocs`);
         await execa.command(
-          `npm i --prefix /var/www/${url}/htdocs && forever ${script}`,
+          `forever start -p /var/www/${url}/htdocs ${script}`,
         );
         res.send(stderr.toString());
       }
