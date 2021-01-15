@@ -8,14 +8,6 @@ const execa = require('execa');
 
 app.use(express.json());
 
-async function generatessl(url) {
-  const { stdout, stderr } = await spawn(`wo site update ${url} --le --force`);
-  if (stderr) {
-    return console.log(stderr.toString());
-  }
-  return console.log(stdout.toString());
-}
-
 app.post('/wp', async (req, res) => {
   const { url, passwordAdmin, userAdmin, ssl, email } = req.body;
 
@@ -25,8 +17,16 @@ app.post('/wp', async (req, res) => {
         ssl ? '--letsencrypt ' : ''
       } --email=${email}`,
     );
-    console.log(stdout);
-    console.log(stderr);
+    const { out, err } = await execa.command(
+      `wo site update ${url} --le --force`,
+    );
+    if (!err) {
+      return res.send('SSL ativado!');
+    }
+    return res.send('Encontramos um erro', err.toString());
+    return console.log(stdout.toString());
+    //console.log(stdout);
+    //console.log(stderr);
   })();
   //await generatessl(url);
 
