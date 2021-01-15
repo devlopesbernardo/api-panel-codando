@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const execa = require('execa');
+const fs = require('fs');
 
 app.use(express.json());
 
@@ -59,9 +60,22 @@ app.post('/node/react', async (req, res) => {
       }
       if (stderr) {
         await execa.command(`npm i --prefix /var/www/${url}/htdocs`);
-        await execa.command(
-          `forever start -p /var/www/${url}/htdocs ${script}`,
-        );
+        let data = `{
+          apps : [
+            {
+              name      : "your-app",
+              script    : "npx",
+              interpreter: "none",
+              args: "serve -p 8443 -T"
+            }
+          ]
+        }`;
+        fs.writeFile(`/var/www/${url}/htdocs`, data, function (err) {
+          if (err) {
+            return err;
+          }
+        });
+        await execa.command(`pm2 start /var/www/${url}/htdocs ${script}`);
         res.send(stderr.toString());
       }
     })();
