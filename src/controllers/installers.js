@@ -17,26 +17,23 @@ app.post('/wp', async (req, res) => {
         ssl ? '--letsencrypt ' : ''
       } --email=${email}`,
     );
-    console.log(stderr);
-    console.log(stdout);
+    console.log('Vim do início', stderr);
+    console.log('Vin do início e sou o stdout', stdout);
     if (ssl) {
       (async () => {
         const { stdout, stderr } = await execa.command(
           `wo site update ${url} --le --force`,
         );
         if (!stderr) {
-          console.log(stdout);
-          console.log('SSL ativado!', stdout);
+          console.log('Vim do meio e sou o stdout', stdout);
         }
         console.log(stderr);
 
         return res.send('Encontramos um erro', stderr.toString());
       })();
     } else {
-      res.send('Deu tudo certo ~ obrigado!');
+      res.statusCode(201).send('Sucesso!');
     }
-
-    return console.log(stdout.toString());
   })();
 });
 
