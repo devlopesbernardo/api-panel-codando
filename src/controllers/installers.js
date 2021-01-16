@@ -62,25 +62,25 @@ app.post('/node/react', async (req, res) => {
         await execa.command(`npm i --prefix /var/www/${url}/htdocs`);
         await execa.command(`npm run --prefix /var/www/${url}/htdocs/ build`);
 
-        let data = `{
-          apps : [
-            {
-              name      : ${appName},
-              script    : "serve",
-              interpreter: "none",
-              args: "-s build -l ${port}"
-            }
-          ]
-        }`;
-        fs.writeFileSync(
-          `/var/www/${url}/htdocs/app.config.json`,
-          data,
-          function (err) {
-            if (err) {
-              return err;
-            }
-          },
-        );
+        // let data = `{
+        //   apps : [
+        //     {
+        //       name      : ${appName},
+        //       script    : "serve",
+        //       interpreter: "none",
+        //       args: "-s build -l ${port}"
+        //     }
+        //   ]
+        // }`;
+        // fs.writeFileSync(
+        //   `/var/www/${url}/htdocs/app.config.json`,
+        //   data,
+        //   function (err) {
+        //     if (err) {
+        //       return err;
+        //     }
+        //   },
+        // );
         await execa.command(
           `pm2 serve build/ ${port} --name '${appName}' --spa`,
           { cwd: `/var/www/${url}/htdocs/` },
